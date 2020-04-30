@@ -171,9 +171,9 @@
     for (int i = 0; i < _muDic.count; i++) {
         _tagIndex += 1;
                
-//        NSArray *arrXib = [[NSBundle mainBundle] loadNibNamed:@"RowView" owner:nil options:nil];
-//        UIView *vXib = arrXib[0];
-        UIView *vXib = [CommRowView commRowView];
+        NSArray *arrXib = [[NSBundle mainBundle] loadNibNamed:@"RowView" owner:nil options:nil];
+        UIView *vXib = arrXib[0];
+//        UIView *vXib = [CommRowView commRowView];
         
         vXib.frame = CGRectMake(300, 70*(i+1), vXib.frame.size.width, vXib.frame.size.height);
         
