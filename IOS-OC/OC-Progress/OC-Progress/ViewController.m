@@ -152,6 +152,7 @@
     if (_point.y == 0) {
         self.btnDel.enabled = NO;
     }
+    
 //    NSLog(@"%@",self.scrollV.subviews);
 //    NSLog(@"%@",[self.scrollV viewWithTag:_tagIndex]);
     
