@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSMutableArray *muArr;
 @property (strong, nonatomic) NSMutableDictionary *muDic;
 @property (strong, nonatomic) NSString *textPath;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollV;
 
 @end
 
@@ -49,7 +50,7 @@
     t.leftViewMode = UITextFieldViewModeAlways;
     t.layer.cornerRadius = 15;
     
-    vXib.frame = CGRectMake(300, _point.y+70, vXib.frame.size.width, vXib.frame.size.height);
+    vXib.frame = CGRectMake(300, _point.y, vXib.frame.size.width, vXib.frame.size.height);
 //    NSLog(@"%@",vXib);
     
 //    _textNew = [[UITextField alloc]initWithFrame:CGRectMake(300, _point.y + 70, textWidth, textHeight)];
@@ -63,14 +64,14 @@
 //    _textNew.layer.cornerRadius = 15;
 ////    _textNew.layer.borderWidth = 1;
     vXib.tag = _tagIndex;
-    [self.view addSubview:vXib];
+    [self.scrollV addSubview:vXib];
     [UIView animateWithDuration:0.2 animations:^{
-        vXib.frame = CGRectMake(30, self->_point.y+70, vXib.frame.size.width, vXib.frame.size.height);
+        vXib.frame = CGRectMake(30, self->_point.y, vXib.frame.size.width, vXib.frame.size.height);
         
     }];
     [t.text writeToFile:@"/Users/zcm/Downloads/JJ.txt" atomically:NO encoding:NSUTF8StringEncoding error:nil];
     
-    _point = vXib.frame.origin;
+    _point = CGPointMake(vXib.frame.origin.x, vXib.frame.origin.y+70);
     self.btnDel.enabled = YES;
     
     [self saveListData];
@@ -130,7 +131,7 @@
         [_muDic removeObjectForKey:[NSString stringWithFormat:@"height%d",i]];
         [_muDic setValue:[NSNumber numberWithInt:[self.view viewWithTag:i-1].frame.origin.y] forKey:[NSString stringWithFormat:@"height%d",i-1]];
 //        NSLog(@"%@",[self.view viewWithTag:i]);
-        NSLog(@"%@",_muDic);
+//        NSLog(@"%@",_muDic);
     }
     [_muDic writeToFile:_textPath atomically:YES];
     _tagIndex -= 1;
@@ -142,15 +143,17 @@
 
 /// delete
 - (IBAction)btnDeleteUpInside:(id)sender {
+    
+    [[self.scrollV viewWithTag:_tagIndex] removeFromSuperview];
     _point.y -= 70;
     _tagIndex -= 1;
-    [[self.view.subviews lastObject] removeFromSuperview];
     [_muDic removeObjectForKey:[NSString stringWithFormat:@"height%lu",(unsigned long)_muDic.count]];
     [_muDic writeToFile:_textPath atomically:YES];
     if (_point.y == 0) {
         self.btnDel.enabled = NO;
     }
-//    NSLog(@"delete..");
+//    NSLog(@"%@",self.scrollV.subviews);
+//    NSLog(@"%@",[self.scrollV viewWithTag:_tagIndex]);
     
 }
 
@@ -193,38 +196,14 @@
 //        NSLog(@"%ld",(long)vXib.tag);  //在前面给tag赋值会报错
         _point = vXib.frame.origin;
         
-        [self.view addSubview:vXib];
+        [self.scrollV addSubview:vXib];
         [UIView animateWithDuration:0.7 animations:^{
-            vXib.frame = CGRectMake(30, 70*(i+1), vXib.frame.size.width, vXib.frame.size.height);
+            vXib.frame = CGRectMake(30, 70*i, vXib.frame.size.width, vXib.frame.size.height);
             
         }];
-            
-            
-//        NSString *strKey = [NSString stringWithFormat:@"height%d",i+1];
-//        _textNew = [[UITextField alloc]initWithFrame:CGRectMake(300, [_muDic[strKey] intValue], textWidth, textHeight)];
-//        _textNew.text = @"please type ...";
-//        _textNew.textColor = [UIColor blackColor];
-//        //        _textNew.backgroundColor = [UIColor lightGrayColor];
-//        _textNew.backgroundColor = [UIColor colorWithRed:230/255 green:230/255 blue:230/255 alpha:0.1];
-//
-//        //设置文字距左边框距离
-//        _textNew.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 8, 0)];
-//        _textNew.leftViewMode = UITextFieldViewModeAlways;
-//
-//        _textNew.layer.cornerRadius = 15;
-//        //        _textNew.layer.borderWidth = 1;
-//        _textNew.tag = _tagIndex;
-//        _point = _textNew.frame.origin;
-        
-//        [self.view addSubview:_textNew];
-        
-//        [UIView animateWithDuration:0.7 animations:^{
-//            self->_textNew.frame = CGRectMake(textX, [self->_muDic[strKey] intValue], textWidth, textHeight);
-////            NSLog(@"%@",self->_muDic);
-//        }];
-         
     }
-    
+//    NSLog(@"%@",self.scrollV.subviews);
+//    NSLog(@"%@",self.scrollV.subviews.lastObject);
     
 }
 - (void)readListData{
@@ -256,6 +235,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.btnDel.enabled = NO;
+    self.scrollV.contentSize = CGSizeMake(375, 800);
     [self readListData];
     NSLog(@"viewDidLoad...");
   
