@@ -33,12 +33,12 @@ int main(int argc, const char * argv[]) {
     //获取文件信息
     NSDictionary *dict = [manager attributesOfItemAtPath:path error:nil];
     NSLog(@"%@",dict[NSFileSize]);
-    //获取文件夹下所有文件/文件夹路径
+    //获取文件夹下所有文件名/文件夹路径
     NSArray *arr = [manager subpathsAtPath:@"/Users/zcm/Downloads"];
-    NSLog(@"%@",arr);
-    //获取文件夹下当前文件/文件夹路径,包括隐藏文件
+//    NSLog(@"3838 %@",arr);
+    //获取文件夹下当前文件名/文件夹路径,包括隐藏文件
     NSArray *arr2 = [manager contentsOfDirectoryAtPath:@"/Users/zcm/Downloads" error:nil];
-    NSLog(@"%@",arr2);
+//    NSLog(@"4141%@",arr2);
     //创建文件
     NSString *str = @"nei rong";
     NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
